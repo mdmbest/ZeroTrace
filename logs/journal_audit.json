@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "horodatage": "2026-05-27T23:51:16.286965",
+    "acteur": "ANONYME",
+    "action": "SOUMISSION_SIGNALEMENT",
+    "details": "Catégorie: Fraude académique | Hash: d855dfed3ce8ff94...",
+    "hash_precedent": "GENESIS",
+    "signature": "c34b96d7d7757d036bb2f4a4c1a12ad1a190b6ae7145725e344c7203b00fe2b1"
+  },
+  {
+    "id": 2,
+    "horodatage": "2026-05-27T23:52:28.737560",
+    "acteur": "AUDITEUR",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Auditeur authentifié",
+    "hash_precedent": "ee366cb2390adade3cc82c4afd2ba909a32f95afe6e7895e754c93d0db959082",
+    "signature": "1a143bb691b5707a3a805732a312e38735405b97c27f7ca0afa679ef58199dc9"
+  }
+]
