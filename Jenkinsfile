@@ -13,21 +13,21 @@ pipeline {
         stage('Build') {
             steps {
                 bat '''
-                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install --upgrade pip || echo "pip skipped"
+                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install --upgrade pip || echo "skipped"
                     "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install -r requirements.txt || echo "Pas de requirements.txt"
                 '''
             }
         }
 
-        stage('DAST - OWASP ZAP') {
+        stage('SAST - Semgrep') {
             steps {
                 bat '''
-                    docker run --rm -v "%CD%:/zap/wrk" --network host ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://localhost:3000 -r zap-report.html -I || exit 0
+                    "C:\\Windows\\semgrep.bat" --config auto --json -o semgrep-report.json --include="*.py" . || exit 0
                 '''
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'semgrep-report.json', allowEmptyArchive: true
                 }
             }
         }
@@ -42,11 +42,11 @@ pipeline {
                     <p><b>Statut :</b> ${currentBuild.currentResult}</p>
                     <p><b>Build :</b> #${BUILD_NUMBER}</p>
                     <p><b>Durée :</b> ${currentBuild.durationString}</p>
-                    <p>Rapport ZAP en pièce jointe</p>
+                    <p>Rapport Semgrep en pièce jointe</p>
                     <a href="${BUILD_URL}">Voir le build Jenkins</a>
                 """,
                 mimeType: 'text/html',
-                attachmentsPattern: 'zap-report.html',
+                attachmentsPattern: 'semgrep-report.json',
                 to: 'mamediarram664@gmail.com'
             )
         }
