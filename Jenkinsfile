@@ -6,7 +6,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'github-token',
                     url: 'https://github.com/mdmbest/ZeroTrace.git'
             }
         }
@@ -14,8 +13,8 @@ pipeline {
         stage('Build') {
             steps {
                 bat '''
-                    python -m pip install --upgrade pip
-                    pip install -r requirements.txt || echo "Pas de requirements.txt"
+                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install --upgrade pip || echo "pip skipped"
+                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install -r requirements.txt || echo "Pas de requirements.txt"
                 '''
             }
         }
