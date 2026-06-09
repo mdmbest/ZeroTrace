@@ -13,8 +13,8 @@ pipeline {
         stage('Build') {
             steps {
                 bat '''
-                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install --upgrade pip || echo "skipped"
-                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python3.13.exe" -m pip install -r requirements.txt || echo "Pas de requirements.txt"
+                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe" -m pip install --upgrade pip || echo "skipped"
+                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe" -m pip install -r requirements.txt || echo "Pas de requirements.txt"
                 '''
             }
         }
@@ -22,7 +22,7 @@ pipeline {
         stage('SAST - Semgrep') {
             steps {
                 bat '''
-                    "C:\\Windows\\semgrep.bat" --config auto --json -o semgrep-report.json --include="*.py" . || exit 0
+                    "C:\\Users\\HP\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe" -m semgrep --config auto --json -o semgrep-report.json --include="*.py" . || exit 0
                 '''
             }
             post {
@@ -41,8 +41,8 @@ pipeline {
                     <h2>Rapport DevSecOps - ZeroTrace</h2>
                     <p><b>Statut :</b> ${currentBuild.currentResult}</p>
                     <p><b>Build :</b> #${BUILD_NUMBER}</p>
-                    <p><b>Durée :</b> ${currentBuild.durationString}</p>
-                    <p>Rapport Semgrep en pièce jointe</p>
+                    <p><b>Duree :</b> ${currentBuild.durationString}</p>
+                    <p>Rapport Semgrep en piece jointe</p>
                     <a href="${BUILD_URL}">Voir le build Jenkins</a>
                 """,
                 mimeType: 'text/html',
@@ -52,10 +52,10 @@ pipeline {
         }
         failure {
             emailext(
-                subject: "❌ ZeroTrace - ERREURS Build #${BUILD_NUMBER}",
+                subject: "ZeroTrace - ERREURS Build #${BUILD_NUMBER}",
                 body: """
-                    <h2>⚠️ Erreurs détectées !</h2>
-                    <p>Le build #${BUILD_NUMBER} a échoué.</p>
+                    <h2>Erreurs detectees !</h2>
+                    <p>Le build #${BUILD_NUMBER} a echoue.</p>
                     <a href="${BUILD_URL}console">Voir les logs</a>
                 """,
                 mimeType: 'text/html',
