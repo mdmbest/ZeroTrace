@@ -16,5 +16,158 @@
     "details": "Auditeur authentifié",
     "hash_precedent": "ee366cb2390adade3cc82c4afd2ba909a32f95afe6e7895e754c93d0db959082",
     "signature": "1a143bb691b5707a3a805732a312e38735405b97c27f7ca0afa679ef58199dc9"
+  },
+  {
+    "id": 3,
+    "horodatage": "2026-05-31T13:41:47.767480",
+    "acteur": "ANONYME",
+    "action": "SOUMISSION_SIGNALEMENT",
+    "details": "Catégorie: Fraude académique | Hash: 126e74a0f1aa08c0...",
+    "hash_precedent": "97b8e029ca5e17471799dabfebfd65a1d2f6d1399ffa9cde0b9f0fbe0afbfdf7",
+    "signature": "7ec53f6ce7b606d0d6e6e15c67d56a78f4c340b8f73bcc2623cdcbd1ad36f9ce"
+  },
+  {
+    "id": 4,
+    "horodatage": "2026-05-31T13:46:56.044978",
+    "acteur": "AUDITEUR",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Auditeur authentifié",
+    "hash_precedent": "5e88a718dbe9cc09747aaacde63f9d81c4aac56bdb9173f7293a300f7139172a",
+    "signature": "3f936f21f3b63d2c88d41459274beec8c255cd206325ae27faa7251104d9cdf6"
+  },
+  {
+    "id": 5,
+    "horodatage": "2026-05-31T13:49:39.478801",
+    "acteur": "INCONNU",
+    "action": "TENTATIVE_CONNEXION_ECHOUEE",
+    "details": "Mauvais mot de passe enquêteur",
+    "hash_precedent": "f0ca694410be4f9d6f530c8efb8d65beb533ea48b6c8eac972bd0ad56cebad62",
+    "signature": "ace51c97a1c3d96a401e46017f6635aaf57a8e74f402d89fa8cb198bd4181f71"
+  },
+  {
+    "id": 6,
+    "horodatage": "2026-05-31T13:49:57.634695",
+    "acteur": "ENQUETEUR",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Enquêteur authentifié",
+    "hash_precedent": "7c5549cc9eae229c9457e891fd08812d0bd12ab59461a59647f791b1a20c5211",
+    "signature": "0d1afb466276c3949193c25727dc31d09ce89ed4fd4eb4db14ace6883a369841"
+  },
+  {
+    "id": 7,
+    "horodatage": "2026-05-31T13:50:43.361427",
+    "acteur": "ENQUETEUR",
+    "action": "LISTE_SIGNALEMENTS",
+    "details": "2 signalement(s) trouvé(s)",
+    "hash_precedent": "dda5544a3b225d8aec1283e02d6b8f1395f9a38a0a81c8817672d222b5db0f27",
+    "signature": "13f48ae59a3524d50ffac255b14320e8d925b8e095dd38ed0c00b772043fe67d"
+  },
+  {
+    "id": 8,
+    "horodatage": "2026-05-31T13:53:35.485462",
+    "acteur": "ENQUETEUR",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Enquêteur authentifié",
+    "hash_precedent": "9da39f9b2ee520db4c6b78af893e9e7edb8ce1666f12c6daad8d37703a0ade01",
+    "signature": "f7d4e2107086cf1bbdd0458afe97c581768a651b42037cd92ccb30d45f67edb4"
+  },
+  {
+    "id": 9,
+    "horodatage": "2026-05-31T13:54:10.208089",
+    "acteur": "ENQUETEUR",
+    "action": "CONSULTATION_SIGNALEMENT",
+    "details": "Token: 35cdedf6... | Statut: recu",
+    "hash_precedent": "050a1e36ef2692227c328aaf6a1fd8d3f11ea727e31e86b47b84a9ee22d51dc8",
+    "signature": "7f8ff7849e890167b7cab12d75457824d2add24d259700beb6f19ef71dc32a25"
+  },
+  {
+    "id": 10,
+    "horodatage": "2026-06-14T21:55:37.570900",
+    "acteur": "admin",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Rôle: admin | Niveau: 3",
+    "hash_precedent": "db08eddf5703519394325958087d26a12ae617ca1c21db6d6201f19395fbde65",
+    "signature": "f49dac286ba92b7ee6d4fde50bbdbff83acf088da822bd981c3d9f628143e94e"
+  },
+  {
+    "id": 11,
+    "horodatage": "2026-06-14T22:05:19.381471",
+    "acteur": "ADMIN",
+    "action": "CREATION_COMPTE",
+    "details": "Utilisateur: enqueteur1 | Rôle: enqueteur | Niveau: 2",
+    "hash_precedent": "6f1a379be6f6df89f668d5e2eadf85690e031738445b141828b5fc46415b6825",
+    "signature": "0b331df2f3497c1347c9a0d47a2b08fcbe16ddc79676c66f8b6b6a0fc9c12935"
+  },
+  {
+    "id": 12,
+    "horodatage": "2026-06-14T22:23:20.803439",
+    "acteur": "ANONYME",
+    "action": "SOUMISSION_SIGNALEMENT",
+    "details": "Catégorie: Trafic de substances illicites | Hash: d1996a19e89ee2ba...",
+    "hash_precedent": "3de1856cb91939d7d59cfa50949e1d031458061d5f4c271ebf4b41a982160178",
+    "signature": "1725f2456f8f571c1df35c5ec1e2b1cad6073846f0dcbeae244632f1870014ec"
+  },
+  {
+    "id": 13,
+    "horodatage": "2026-06-14T22:25:55.477403",
+    "acteur": "admin",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Rôle: admin | Niveau: 3",
+    "hash_precedent": "991a407469c8c7807f55f24d1e40d74ca09dec1d0748f7dd3f3b74455fa88612",
+    "signature": "7673e5a236dba1e564472c612585722fa99b5d55710de846532e8b1e57a3ce0c"
+  },
+  {
+    "id": 14,
+    "horodatage": "2026-06-14T22:26:02.028697",
+    "acteur": "ENQUETEUR",
+    "action": "LISTE_SIGNALEMENTS",
+    "details": "3 signalement(s) trouvé(s)",
+    "hash_precedent": "35de711a88ef995f67fa1afa49b44114f468169e479052fc9ea2bfa4fcb9a9bd",
+    "signature": "885c58846b3a27b523001c1f5d9073df8a1811a9ec0f073fd92dff6e3be780d5"
+  },
+  {
+    "id": 15,
+    "horodatage": "2026-06-14T22:26:39.187321",
+    "acteur": "ADMIN",
+    "action": "AFFECTATION_DOSSIER",
+    "details": "Token: 3f8547a4... | Enquêteur: enqueteur1 | Niveau: 2",
+    "hash_precedent": "8a061b606ea4175a6fcca4ac5ed73434a52e7d1346ff0cd5028895d44b395016",
+    "signature": "2502ecaec8dd718ac1345994b72ec77e774396b0c01e3893f4382ba69753ba67"
+  },
+  {
+    "id": 16,
+    "horodatage": "2026-06-14T22:28:18.471328",
+    "acteur": "enqueteur1",
+    "action": "TENTATIVE_CONNEXION_ECHOUEE",
+    "details": "Code TOTP invalide",
+    "hash_precedent": "7ec6517d6a4a0c557822a4a028b67c59b0c34609ceb62036043e15c585ba8fe3",
+    "signature": "e8d7fc7d1bd3c80635155ee7c8b4fcef40c870bdda687df6e2f53ec4939b9893"
+  },
+  {
+    "id": 17,
+    "horodatage": "2026-06-14T22:29:21.065445",
+    "acteur": "enqueteur1",
+    "action": "CONNEXION_REUSSIE",
+    "details": "Rôle: enqueteur | Niveau: 2",
+    "hash_precedent": "752df8d0bd834e234ae9da0d29d56a419ead803ec9729dae89acb5021fe04411",
+    "signature": "72fa2c5119390d3c2ef7451aefb99061976a7341635e6ef0a25d558aa2b37295"
+  },
+  {
+    "id": 18,
+    "horodatage": "2026-06-14T22:30:30.605305",
+    "acteur": "ENQUETEUR",
+    "action": "CONSULTATION_SIGNALEMENT",
+    "details": "Token: 3f8547a4... | Statut: recu",
+    "hash_precedent": "57ae741e0a612ed9ba984025999dbc54b44adfbea4e98fcf6061c73dcb288e79",
+    "signature": "6343bcee5983bc398c980d0a7db7999b1358118c8f67123ef0d0fa278ea5af56"
+  },
+  {
+    "id": 19,
+    "horodatage": "2026-06-14T22:33:13.006567",
+    "acteur": "enqueteur1",
+    "action": "MESSAGE_ENVOYE",
+    "details": "Token: 3f8547a4... | Message #1",
+    "hash_precedent": "cebd5cad426e1485bde2b6e06193dbbd0b057a921bd6e80dacf18b166a071e00",
+    "signature": "66c64e3f12792b704b8346534be5d91fdc7697283c8184beda51c301b2ce0d5e"
   }
 ]

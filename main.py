@@ -1,16 +1,15 @@
 import sys
 from crypto_utils import generer_cles
+from auth import initialiser_users, authentifier
+from admin import menu_admin, get_dossiers_enqueteur
 from signalement import (
     soumettre_signalement,
     consulter_signalement,
     lister_signalements,
     mettre_a_jour_statut
 )
-from auditeur import (
-    afficher_journal,
-    verifier_journal,
-    exporter_journal
-)
+from canal import menu_canal_lanceur, menu_canal_enqueteur
+from auditeur import afficher_journal, verifier_journal, exporter_journal
 from audit import enregistrer_action
 
 def afficher_menu_principal():
@@ -22,6 +21,7 @@ def afficher_menu_principal():
     print("  [1] 🕵️  Lanceur d'alerte — Soumettre un signalement")
     print("  [2] 🔍  Enquêteur       — Gérer les dossiers")
     print("  [3] 📋  Auditeur        — Consulter le journal")
+    print("  [4] ⚙️   Administrateur  — Gérer les comptes")
     print("  [0] 🚪  Quitter")
     print("="*55)
 
@@ -31,6 +31,7 @@ def menu_lanceur():
     print("-"*55)
     print("  [1] Soumettre un nouveau signalement")
     print("  [2] Suivre mon dossier (via token)")
+    print("  [3] Canal de communication anonyme")
     print("  [0] Retour")
     print("-"*55)
 
@@ -43,8 +44,7 @@ def menu_lanceur():
         print("  [3] Abus de pouvoir")
         print("  [4] Trafic de substances illicites")
         print("  [5] Autre")
-
-        cat_choix = input("\n  Choisissez une catégorie : ").strip()
+        cat = input("\n  Choisissez une catégorie : ").strip()
         categories = {
             "1": "Corruption / Détournement de fonds",
             "2": "Fraude académique",
@@ -52,17 +52,14 @@ def menu_lanceur():
             "4": "Trafic de substances illicites",
             "5": "Autre"
         }
-        categorie = categories.get(cat_choix, "Autre")
-
-        print("\n  Décrivez les faits (appuyez sur Entrée quand terminé) :")
+        categorie = categories.get(cat, "Autre")
+        print("\n  Décrivez les faits :")
         contenu = input("  > ").strip()
-
         if contenu:
             token = soumettre_signalement(categorie, contenu)
-            print(f"\n  ⚠️  IMPORTANT : Conservez précieusement votre token !")
-            print(f"  Il est votre seule clé d'accès anonyme à ce dossier.\n")
+            print(f"\n  ⚠️  Conservez votre token !")
         else:
-            print("  ❌ Contenu vide — signalement annulé.")
+            print("  ❌ Contenu vide — annulé.")
 
     elif choix == "2":
         token = input("\n  Entrez votre token : ").strip()
@@ -70,114 +67,122 @@ def menu_lanceur():
             signalement = consulter_signalement(token)
             if signalement:
                 print("\n" + "-"*55)
-                print(f"  📁 Dossier trouvé")
-                print(f"  Catégorie  : {signalement['categorie']}")
-                print(f"  Date       : {signalement['horodatage']}")
-                print(f"  Statut     : {signalement['statut']}")
-                print(f"  Contenu    : {signalement['contenu']}")
+                print(f"  Catégorie : {signalement['categorie']}")
+                print(f"  Date      : {signalement['horodatage']}")
+                print(f"  Statut    : {signalement['statut']}")
+                print(f"  Contenu   : {signalement['contenu']}")
                 print("-"*55)
+
+    elif choix == "3":
+        token = input("\n  Entrez votre token : ").strip()
+        if token:
+            menu_canal_lanceur(token)
 
 def menu_enqueteur():
     print("\n" + "-"*55)
     print("  MODE : ENQUÊTEUR")
+    print("  Authentification requise (bcrypt + TOTP)")
     print("-"*55)
-    print("  Authentification requise.")
 
-    # Authentification simple pour le Sprint Alpha
-    mot_de_passe = input("  Mot de passe enquêteur : ").strip()
+    username = input("  Nom d'utilisateur : ").strip()
+    mot_de_passe = input("  Mot de passe : ").strip()
+    code_totp = input("  Code TOTP (Google Authenticator) : ").strip()
 
-    # Mot de passe hardcodé pour le sprint Alpha
-    # (sera remplacé par bcrypt + TOTP au Sprint Beta)
-    if mot_de_passe != "enqueteur2026":
-        print("  ❌ Mot de passe incorrect.")
-        enregistrer_action(
-            acteur="INCONNU",
-            action="TENTATIVE_CONNEXION_ECHOUEE",
-            details="Mauvais mot de passe enquêteur"
-        )
+    user, erreur = authentifier(username, mot_de_passe, code_totp)
+    if erreur:
+        print(f"\n  ❌ {erreur}")
         return
 
-    enregistrer_action(
-        acteur="ENQUETEUR",
-        action="CONNEXION_REUSSIE",
-        details="Enquêteur authentifié"
-    )
+    if user["role"] not in ["enqueteur", "admin"]:
+        print("  ❌ Accès non autorisé.")
+        return
 
-    print("\n  ✅ Authentifié.")
-    print("\n  [1] Lister les signalements")
-    print("  [2] Consulter un signalement")
-    print("  [3] Mettre à jour le statut d'un dossier")
-    print("  [0] Retour")
+    print(f"\n  ✅ Authentifié. Niveau {user['niveau']}.")
 
-    choix = input("\n  Votre choix : ").strip()
+    # Dossiers affectés à cet enquêteur (DAC)
+    dossiers_autorises = get_dossiers_enqueteur(username)
 
-    if choix == "1":
-        signalements = lister_signalements()
-        if not signalements:
-            print("\n  Aucun signalement trouvé.")
-        else:
-            print(f"\n  {len(signalements)} signalement(s) :\n")
-            for i, s in enumerate(signalements, 1):
-                print(f"  [{i}] Token   : {s['token']}")
-                print(f"       Catégorie : {s['categorie']}")
-                print(f"       Date      : {s['horodatage']}")
-                print(f"       Statut    : {s['statut']}")
-                print()
+    while True:
+        print("\n  [1] Mes dossiers affectés")
+        print("  [2] Consulter un dossier")
+        print("  [3] Mettre à jour le statut")
+        print("  [4] Canal de communication")
+        print("  [0] Retour")
 
-    elif choix == "2":
-        token = input("\n  Token complet du dossier : ").strip()
-        if token:
-            signalement = consulter_signalement(token)
-            if signalement:
+        choix = input("\n  Votre choix : ").strip()
+
+        if choix == "1":
+            if not dossiers_autorises:
+                print("\n  Aucun dossier affecté.")
+            else:
+                print(f"\n  {len(dossiers_autorises)} dossier(s) affecté(s) :\n")
+                for token in dossiers_autorises:
+                    sig = consulter_signalement(token)
+                    if sig:
+                        print(f"  Token   : {token[:8]}...")
+                        print(f"  Cat     : {sig['categorie']}")
+                        print(f"  Statut  : {sig['statut']}\n")
+
+        elif choix == "2":
+            token = input("\n  Token du dossier : ").strip()
+            if token not in dossiers_autorises:
+                print("  ❌ Accès refusé — dossier non affecté.")
+                enregistrer_action(username, "ACCES_REFUSE",
+                                   f"Token: {token[:8]}...")
+                continue
+            sig = consulter_signalement(token)
+            if sig:
                 print("\n" + "-"*55)
-                print(f"  📁 Dossier #{token[:8]}...")
-                print(f"  Catégorie  : {signalement['categorie']}")
-                print(f"  Date       : {signalement['horodatage']}")
-                print(f"  Statut     : {signalement['statut']}")
-                print(f"  Contenu    : {signalement['contenu']}")
+                print(f"  Catégorie : {sig['categorie']}")
+                print(f"  Date      : {sig['horodatage']}")
+                print(f"  Statut    : {sig['statut']}")
+                print(f"  Contenu   : {sig['contenu']}")
                 print("-"*55)
 
-    elif choix == "3":
-        token = input("\n  Token du dossier : ").strip()
-        print("  Nouveaux statuts disponibles :")
-        print("  [1] en_cours")
-        print("  [2] cloture")
-        print("  [3] escalade")
-        statuts = {"1": "en_cours", "2": "cloture", "3": "escalade"}
-        choix_statut = input("  Votre choix : ").strip()
-        nouveau_statut = statuts.get(choix_statut)
-        if nouveau_statut and token:
-            mettre_a_jour_statut(token, nouveau_statut)
+        elif choix == "3":
+            token = input("\n  Token du dossier : ").strip()
+            if token not in dossiers_autorises:
+                print("  ❌ Accès refusé.")
+                continue
+            print("  [1] en_cours  [2] cloture  [3] escalade")
+            s = input("  Statut : ").strip()
+            statuts = {"1":"en_cours","2":"cloture","3":"escalade"}
+            if s in statuts:
+                mettre_a_jour_statut(token, statuts[s])
+
+        elif choix == "4":
+            token = input("\n  Token du dossier : ").strip()
+            if token not in dossiers_autorises:
+                print("  ❌ Accès refusé.")
+                continue
+            menu_canal_enqueteur(token, username)
+
+        elif choix == "0":
+            break
 
 def menu_auditeur():
     print("\n" + "-"*55)
     print("  MODE : AUDITEUR")
+    print("  Authentification requise (bcrypt + TOTP)")
     print("-"*55)
-    print("  Authentification requise.")
 
-    mot_de_passe = input("  Mot de passe auditeur : ").strip()
+    username = input("  Nom d'utilisateur : ").strip()
+    mot_de_passe = input("  Mot de passe : ").strip()
+    code_totp = input("  Code TOTP : ").strip()
 
-    if mot_de_passe != "auditeur2026":
-        print("  ❌ Mot de passe incorrect.")
-        enregistrer_action(
-            acteur="INCONNU",
-            action="TENTATIVE_CONNEXION_ECHOUEE",
-            details="Mauvais mot de passe auditeur"
-        )
+    user, erreur = authentifier(username, mot_de_passe, code_totp)
+    if erreur:
+        print(f"\n  ❌ {erreur}")
         return
 
-    enregistrer_action(
-        acteur="AUDITEUR",
-        action="CONNEXION_REUSSIE",
-        details="Auditeur authentifié"
-    )
+    if user["role"] != "auditeur" and user["role"] != "admin":
+        print("  ❌ Accès non autorisé.")
+        return
 
     print("\n  ✅ Authentifié.")
-    print("\n  [1] Afficher le journal d'audit")
-    print("  [2] Vérifier l'intégrité du journal")
+    print("\n  [1] Afficher le journal")
+    print("  [2] Vérifier l'intégrité")
     print("  [3] Exporter le journal")
-    print("  [0] Retour")
-
     choix = input("\n  Votre choix : ").strip()
 
     if choix == "1":
@@ -187,9 +192,32 @@ def menu_auditeur():
     elif choix == "3":
         exporter_journal()
 
+def menu_administrateur():
+    print("\n" + "-"*55)
+    print("  MODE : ADMINISTRATEUR")
+    print("  Authentification requise (bcrypt + TOTP)")
+    print("-"*55)
+
+    username = input("  Nom d'utilisateur : ").strip()
+    mot_de_passe = input("  Mot de passe : ").strip()
+    code_totp = input("  Code TOTP : ").strip()
+
+    user, erreur = authentifier(username, mot_de_passe, code_totp)
+    if erreur:
+        print(f"\n  ❌ {erreur}")
+        return
+
+    if user["role"] != "admin":
+        print("  ❌ Accès non autorisé.")
+        return
+
+    print("\n  ✅ Authentifié en tant qu'administrateur.")
+    menu_admin(user)
+
 def main():
     print("\n  Initialisation de ZeroTrace...")
     generer_cles()
+    initialiser_users()
     print("  ✅ Système prêt.\n")
 
     while True:
@@ -202,6 +230,8 @@ def main():
             menu_enqueteur()
         elif choix == "3":
             menu_auditeur()
+        elif choix == "4":
+            menu_administrateur()
         elif choix == "0":
             print("\n  Au revoir.\n")
             sys.exit(0)
